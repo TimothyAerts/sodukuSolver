@@ -29,7 +29,7 @@ class Sudoku {
         //TODO is there a conflict in row r when we fill in d?
         for (int column=0;column<SIZE;column++){
             if (grid[r][column] == d){
-                return false;
+                return true;
             }
         }
     //END TODO
