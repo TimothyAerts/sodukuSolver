@@ -1,4 +1,4 @@
-package sudoku;
+import java.util.ArrayList;
 
 
 
@@ -6,7 +6,6 @@ class Sudoku {
     private static final int SIZE = 9;     // size of the grid e.g. 9 -> 9x9
     private static final int DMAX = 9;     // max digit to be filled in 9 -> all digits \in {1,2,3,4,5,6,7,8,9}
     private static final int BOXSIZE = 3;  // size of the boxes e.g. 3 -> 3x3
-    private static final int[] possibleSolution = new int[DMAX];
     int[][] grid = new int[][] {
         { 0, 6, 0,  0, 0, 1,  0, 9, 4 },
         { 3, 0, 0,  0, 0, 7,  1, 0, 0 },
@@ -23,33 +22,34 @@ class Sudoku {
     
     boolean givesConflict(int r, int  c, int d) {
         //TODO is there a conflict when we fill in d at position r,c?
-        this.rowConflict(r, d);
-        this.colConflict(c, d);
-        this.boxConflict(r, c, d);
+        if (this.rowConflict(r, d) || this.colConflict(c, d) || this.boxConflict(r, c, d)){
+            return true;
+        }else {
+          return false;  
+        }
         
         
-        return false;
     }
     
     boolean rowConflict(int r, int d) {
         //TODO is there a conflict in row r when we fill in d?
         for (int column = 0 ; column < SIZE ; column++) {
             if (grid[r][column] == d) {
-                return false;
+                return true;
             }
         }
     //END TODO
-    return true ;   
+    return false;   
     }
     
     boolean colConflict(int c, int d) {
         //TODO is there a conflict in column c when we fill in d?
         for (int row = 0 ; row < SIZE ; row++) {
             if (grid[row][c] == d) {
-                return false;
+                return true;
             }
         }
-      return true;
+      return false;
     }
     
     boolean boxConflict(int rr, int cc, int d) {
@@ -60,22 +60,21 @@ class Sudoku {
         int coladj = (cc/BOXSIZE)*BOXSIZE;
         
         for (int i = 0; i < BOXSIZE; i++){
-            for (int j = 0; j < BOXSIZE; j++){
+            for (int j = 0;j < BOXSIZE; j++){
                 if (grid[rowadj+i][coladj+j]!=grid[rr][cc] && 
                     grid[rowadj+i][coladj+j] == d) {
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
-        
+        return false;    
         //END TODO
     }
         
     int[] findEmptySquare() {
         //TODO return the next empty square (See assignment).
         int[] emptycell = new int[2];
-        for(int row = 0; row < SIZE; row++){
+        for(int row=0;row<SIZE;row++){
             for (int column=0;column<SIZE;column++){
                 if (grid[row][column] == 0){
                     emptycell[0] = row;
@@ -86,37 +85,39 @@ class Sudoku {
         }
         return null;  
     }
-    
-    int[] possibleOptions() {
-        for (int i = 1; i < 10; i++) {
-            if(this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], i)){
-                possibleSolution[i] = i;
-            }
-            else{
-                continue;
+    public boolean recursiveCellCheck(int i, int j, int[][] grid) {
+        for (int val = 1; val <= 9; ++val) {
+            if (this.givesConflict(i,j,val)) {
+                grid[i][j] = val;
+                int[] newcell = this.findEmptySquare();
+                if (newcell == null){
+                    return true;
+                }else if (this.recursiveCellCheck(newcell[0],newcell[1],grid)){
+                    return true;
             }
         }
-        return possibleSolution;
+        grid[i][j] = 0; // reset on backtrack
+        return false;
     }
+        System.out.println("How the fuck did we end up here");
+        return false;
+    }
+
+
     
     
     
-    
+ 
     void solve() {
-        
-        this.print();
-        this.findEmptySquare();
-        
-        while (this.findEmptySquare()[] != 0) {
-            for (int d = 1; d <= DMAX; d++) {
-            this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], d);
-            if(this.givesConflict(this.findEmptySquare()[0], 
-                    this.findEmptySquare()[1], d) == false){
-                
-            }
-            }
-        if()
-        }
+        //TODO see (4)
+      int[] currentcell = this.findEmptySquare();
+      if (currentcell != null){
+          this.recursiveCellCheck(currentcell[0], currentcell[1], grid);
+          
+      }
+      }
+
+
         //END TODO
     }
     
