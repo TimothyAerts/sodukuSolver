@@ -6,6 +6,7 @@ class Sudoku {
     private static final int SIZE = 9;     // size of the grid e.g. 9 -> 9x9
     private static final int DMAX = 9;     // max digit to be filled in 9 -> all digits \in {1,2,3,4,5,6,7,8,9}
     private static final int BOXSIZE = 3;  // size of the boxes e.g. 3 -> 3x3
+    private static final int[] possibleSolution = new int[DMAX];
     int[][] grid = new int[][] {
         { 0, 6, 0,  0, 0, 1,  0, 9, 4 },
         { 3, 0, 0,  0, 0, 7,  1, 0, 0 },
@@ -25,6 +26,7 @@ class Sudoku {
         this.rowConflict(r, d);
         this.colConflict(c, d);
         this.boxConflict(r, c, d);
+        
         
         return false;
     }
@@ -58,21 +60,22 @@ class Sudoku {
         int coladj = (cc/BOXSIZE)*BOXSIZE;
         
         for (int i = 0; i < BOXSIZE; i++){
-            for (int j = 0;j < BOXSIZE; j++){
+            for (int j = 0; j < BOXSIZE; j++){
                 if (grid[rowadj+i][coladj+j]!=grid[rr][cc] && 
                     grid[rowadj+i][coladj+j] == d) {
                     return false;
                 }
             }
         }
-        return true;    
+        return true;
+        
         //END TODO
     }
         
     int[] findEmptySquare() {
         //TODO return the next empty square (See assignment).
         int[] emptycell = new int[2];
-        for(int row=0;row<SIZE;row++){
+        for(int row = 0; row < SIZE; row++){
             for (int column=0;column<SIZE;column++){
                 if (grid[row][column] == 0){
                     emptycell[0] = row;
@@ -84,12 +87,35 @@ class Sudoku {
         return null;  
     }
     
+    int[] possibleOptions() {
+        for (int i = 1; i < 10; i++) {
+            if(this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], i)){
+                possibleSolution[i] = i;
+            }
+            else{
+                continue;
+            }
+        }
+        return possibleSolution;
+    }
+    
+    
+    
+    
     void solve() {
-        //TODO see (4)
+        
         this.print();
         this.findEmptySquare();
-        for (int d = 1; d <= DMAX; d++) {
-        this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], d);
+        
+        while (this.findEmptySquare()[] != 0) {
+            for (int d = 1; d <= DMAX; d++) {
+            this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], d);
+            if(this.givesConflict(this.findEmptySquare()[0], 
+                    this.findEmptySquare()[1], d) == false){
+                
+            }
+            }
+        if()
         }
         //END TODO
     }
