@@ -22,12 +22,10 @@ class Sudoku {
     
     boolean givesConflict(int r, int  c, int d) {
         //TODO is there a conflict when we fill in d at position r,c?
-
-        for (d = 1; d <= 9; d++) {
-            this.rowConflict(r, d);
-            this.colConflict(c, d);
-            this.boxConflict(r, c, d);
-        }
+        this.rowConflict(r, d);
+        this.colConflict(c, d);
+        this.boxConflict(r, c, d);
+        
         return false;
     }
     
@@ -59,8 +57,8 @@ class Sudoku {
         int rowadj = (rr/BOXSIZE)*BOXSIZE ;
         int coladj = (cc/BOXSIZE)*BOXSIZE;
         
-        for (int i=0;i<3;i++){
-            for (int j=0;j<3;j++){
+        for (int i = 0; i < BOXSIZE; i++){
+            for (int j = 0;j < BOXSIZE; j++){
                 if (grid[rowadj+i][coladj+j]!=grid[rr][cc] && 
                     grid[rowadj+i][coladj+j] == d) {
                     return false;
@@ -90,8 +88,9 @@ class Sudoku {
         //TODO see (4)
         this.print();
         this.findEmptySquare();
-        this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], DMAX);
-        
+        for (int d = 1; d <= DMAX; d++) {
+        this.givesConflict(this.findEmptySquare()[0], this.findEmptySquare()[1], d);
+        }
         //END TODO
     }
     
