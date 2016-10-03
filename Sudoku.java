@@ -33,35 +33,33 @@ class Sudoku {
             }
         }
     //END TODO
-    return true ;   
+    return false ;   
     }
     
     boolean colConflict(int c, int d) {
         //TODO is there a conflict in column c when we fill in d?
         for (int row=0;row<SIZE;row++){
             if (grid[row][c] == d){
-                return false;
+                return true;
             }
         }
         //END TODO
-      return true;
+      return false;
     }
     
     boolean boxConflict(int rr, int cc, int d) {
         //TODO is there a conflict when we fill in d at position in the box of rr,cc?
-        //Need to create something in order to make sure we only check box. 
-        //IE if middle element we need to check left and right if left 2 right if right 2 left etc.
         int rowadj = (rr/BOXSIZE)*BOXSIZE ;
-        int coladj = (cc/BOXSIZE)*BOXSIZE;
+        int coladj = (cc/BOXSIZE)*BOXSIZE;   // values to create adjustment to make sure we compare only the box the value is in
         
         for (int i=0;i<3;i++){
         for (int j=0;j<3;j++){
             if (grid[rowadj+i][coladj+j]!=grid[rr][cc] && grid[rowadj+i][coladj+j]== d){
-                return false;
+                return true;
             }
         }
     }
-    return true;    
+    return false;    
         //END TODO
     }
        
